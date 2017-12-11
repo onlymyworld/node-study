@@ -1,0 +1,59 @@
+闭包的概念
+闭包可以简单理解为“定义在一个函数内部的函数”;
+闭包就是可以读取其他函数内部变量的函数
+闭包的用途
+	1:可以读取函数内部的变量;
+	2:让这些变量的值始终保持在内存中。
+
+function f1(){
+	var n =999;
+	function f2(){
+		console.log(n);
+	}
+	return f2;
+}
+
+var result = f1();
+result();	//999
+
+
+
+
+function f1(){
+	var number=1;
+	addNumber = function(){addNumber+=1;}
+	return function(){
+		console.log(addNumber)
+	}
+}
+var result = f1();
+result();	//1
+addNumber();
+result();	//2
+
+
+
+//分析下列两个例子的运行结果
+var name = 'The Window';
+var object = {
+	name:'The Object',
+	getNameFunc:function(){
+		return function(){
+			return this.name
+		}
+	}
+}
+console.log(object.getNameFunc()());	//运行结果为 The Window
+
+var name = 'The Window';
+var object ={
+	name:'The Object',
+	getNameFunc:function(){
+		var that = this;
+		return function(){
+			return that.name;
+		}
+	}
+}
+
+console.log(object.getNameFunc()())	//运行结果为 The Object

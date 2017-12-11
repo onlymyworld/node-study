@@ -1,0 +1,17 @@
+{
+	"user1":{
+		"name":"zhangsan",
+		"age":12,
+		"position":"web front development"
+	},
+	"user2":{
+		"name":"lisi",
+		"age":20,
+		"position":"java development"
+	},
+	"user3":{
+		"name":"wangwu",
+		"age":23,
+		"position":"node.js development"
+	}
+}

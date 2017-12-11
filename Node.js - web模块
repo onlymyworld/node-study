@@ -1,0 +1,85 @@
+Node.js - web模块
+
+一:使用Node创建web服务器
+Node.js中提供的http模块,http模块主要用于搭建HTTP服务器和客户端；使用HTTP服务器或客户端功能必须调用http模块
+
+	创建server.js文件
+	var http = require('http');
+	var fs = require('fs');
+	var url = require('url');
+
+	//创建服务器
+	http.createServer(function(request,response){
+		//解析请求,包括文件名
+		var pathname =  url.parse(request.url).pathname;
+
+		//输出请求的文件名
+		console.log('Request for' + pathname+ " received");
+
+		//从文件系统读取请求的文件内容
+		fs.readFile(pathname.substr(1),function(err,data){
+			if(err){
+				console.log(err);
+				//HTTP 状态码 404 ：NOT FOUND
+				//Content Type:text/plain
+				response.writeHead(404,{'Content-Type':'text/html'});
+			}else{
+				//HTTP状态码: 200 OK
+				//Content Type:text/plain
+				response.writeHead(200,{'Content-Type':'text/html'});
+
+				//响应文件内容
+				response.write(data.toString())
+			}
+			//发送响应数据
+			response.end();
+		})
+	}).listen(8001)
+
+create a html file at the same path [index.html]
+在相同目录下创建一个html文件 [index.html]
+	//index.html
+	<!DOCTYPE html>
+	<html>
+	<head>
+		<title>server</title>
+	</head>
+	<body>
+	Hello World
+	</body>
+	</html>
+
+open the Node running environment
+打开Node运行环境
+$ node server.js
+打开浏览器[Open the browser]- 输入http://127.0.0.1:8001/index.html 
+
+
+二: 使用Node.js创建Web客户端
+	
+	创建客户端文件[create client.js]
+	var http = require('http');
+
+	//用于请求的选项
+	var options = {
+		host:'localhost',
+		port:'8081',
+		path:'/index.html'
+	};
+
+	//处理相应的回调函数
+	var callback = function(response){
+		//不断更新数据
+		var body = '';
+		response.on('data',function(data){
+			body += data;
+		});
+		response.on('end',function(){
+			//数据接收完成
+			console.log(body);
+		})
+	}
+
+	//向服务器端发送请求
+	var req = http.request(options,callback);
+	req.end();

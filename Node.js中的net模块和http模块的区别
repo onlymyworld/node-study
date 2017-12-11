@@ -1,0 +1,6 @@
+Node.js中的net模块和http模块的区别
+net对应传输层
+http对应应用层
+而且http依赖net
+net是用于创建TCP服务器与客户端
+http是用于创建HTTP服务器端及客户端
